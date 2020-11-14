@@ -1,0 +1,26 @@
+To Run the program:
+
+# test
+mvn test
+
+# run
+mvn compile exec:java
+
+Assumptions:
+1. The application is for a single store rather than multiple stores managing their own products and deals.
+2. Authentication and user registration is out of the scope of this exercise.
+3. Searching capability is also out of scope of this excise but can be extended easily in the future. 
+
+Highlights:
+Single Responsibility Principle
+The design of Store checkout closely follows Single Responsibility Principle. The separation of persistent actions into standalone interface make it easy to assemble the actions for a particular data. For example, it makes sense to remove a product from store but not too much to remove a user. The persistent implementation is also decoupled from the actions which then gives flexibility on various storage medium (in memory, file system or a DB). 
+
+Type Safety
+Type safety is another principal followed closely. In a nutshell, the goal of type safety is to eliminate as many programming bugs as possible at compile time, where the cost of mistake is lowest. Ideally, any external raw data (Strings or doubles) should be properly validated and converted into its domain-specific type at the system boundary. A simple example would be, physical address and email address have different meaning in its own context. A physical address has country, city and email has domain. If we let String model two and pass around the system, any method that takes a String won’t be sure if it presents email or address or whether it’s already properly validated. That (mis)assumption is common source of programming bugs. In this excise, Quantity and Discount are properly typed but because of the time limitation, User’s email, name, Product’s price, category and brand are not and needs refactoring in the future.
+
+Immutability
+All data class are designed in an immutable way. Any mutation can only be done via its factory. Immutability makes it easy to reason for the system and also thread safe by nature. 
+
+Design Patterns
+Construction pattern (Factory and Builder) are heavily used in the design. Most (if it’s not all) object constructors are defined as private and construction can only done via static factory methods. It has several benefits like better and meaningful naming, programming towards interface and hiding the actual implementation, controlling number of duplicated instance.
+    
